@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="260.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controler.M__F_C">
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <children>
+      <Button fx:id="g_m" contentDisplay="GRAPHIC_ONLY" layoutX="97.0" layoutY="53.0" mnemonicParsing="false" onAction="#game_mode" prefHeight="50.0" prefWidth="50.0" text="Button">
+         <graphic>
+            <ImageView fx:id="image_g_m" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic>
+      </Button>
+      <Button fx:id="b0_0" layoutX="10.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b0_1" layoutX="40.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b0_2" layoutX="70.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b0_3" layoutX="100.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b0_7" layoutX="220.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b0_6" layoutX="190.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b0_5" layoutX="160.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b0_4" layoutX="130.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b1_4" layoutX="130.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b1_5" layoutX="160.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b1_6" layoutX="190.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b1_7" layoutX="220.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b1_3" layoutX="100.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b1_2" layoutX="70.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b1_1" layoutX="40.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b1_0" layoutX="10.0" layoutY="180.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b2_4" layoutX="130.0" layoutY="210.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b2_5" layoutX="160.0" layoutY="210.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b2_6" layoutX="190.0" layoutY="210.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b2_7" layoutX="220.0" layoutY="210.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b2_3" layoutX="100.0" layoutY="210.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b2_2" layoutX="70.0" layoutY="210.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b2_1" layoutX="40.0" layoutY="210.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b2_0" layoutX="10.0" layoutY="210.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b3_4" layoutX="130.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b3_5" layoutX="160.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b3_6" layoutX="190.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b3_7" layoutX="220.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b3_3" layoutX="100.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b3_2" layoutX="70.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b3_1" layoutX="40.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b3_0" layoutX="10.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b4_4" layoutX="130.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b4_5" layoutX="160.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b4_6" layoutX="190.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b4_7" layoutX="220.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b4_3" layoutX="100.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b4_2" layoutX="70.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b4_1" layoutX="40.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b4_0" layoutX="10.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b5_4" layoutX="130.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b5_5" layoutX="160.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b5_6" layoutX="190.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b5_7" layoutX="220.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b5_3" layoutX="100.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b5_2" layoutX="70.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b5_1" layoutX="40.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b5_0" layoutX="10.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b6_4" layoutX="130.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b6_5" layoutX="160.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b6_6" layoutX="190.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b6_7" layoutX="220.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b6_3" layoutX="100.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b6_2" layoutX="70.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b6_1" layoutX="40.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b6_0" layoutX="10.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b7_4" layoutX="130.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b7_5" layoutX="160.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b7_6" layoutX="190.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b7_7" layoutX="220.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b7_3" layoutX="100.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b7_2" layoutX="70.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b7_1" layoutX="40.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="b7_0" layoutX="10.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+   </children>
+</AnchorPane>
