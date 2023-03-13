@@ -169,9 +169,10 @@ public class M__F_C implements Initializable {
     @FXML
     private void game_mode(ActionEvent event) {
         if(!this.begin){
-            
+            System.out.println("hard mode activated");
             //insertar cambio de imagen
         }else{
+            System.out.println("ez mode activated");
             //insertar cambio de imagen
         }
         this.ga_mo=!this.ga_mo;
@@ -181,12 +182,15 @@ public class M__F_C implements Initializable {
     @FXML
     private void cords_selected(MouseEvent e) {
         Button x = (Button) e.getSource();
+        int i = Integer.parseInt(x.getId().charAt(1)+"");
+        int j = Integer.parseInt(x.getId().charAt(3)+"");
         
         if ("PRIMARY".equals(e.getButton().toString())){
-            System.out.println("der ");
+            System.out.println("der "+i+" "+j);
+            
         }
         if ("SECONDARY".equals(e.getButton().toString())){
-            System.out.println("iz ");
+            System.out.println("iz "+i+" "+j);
         }
         
     }
