@@ -7,7 +7,7 @@ package controler;
 import java.util.Random;
 /**
  *
- * @author Gabriel
+ * @author GBB
  */
 public class Rndm {
     public static int random_int(int x){

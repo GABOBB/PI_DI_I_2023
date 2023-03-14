@@ -13,8 +13,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
- *
- * @author Gabriel
+ *  esta clase es la responslabe de de iniciar 
+ *  la ejecucion y cargar la ventana
+ * @author GBB
  */
 public class MainClass extends Application {
     

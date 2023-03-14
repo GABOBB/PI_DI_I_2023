@@ -5,8 +5,9 @@
 package model;
 
 /**
- *
- * @author Gabriel
+ *  esta clase es con el proposito de almacenar la informacion 
+ *  necesaria para un nodo de una lista doblemante enlazada
+ * @author GBB
  */
 public class N_d_e {
     N_d_e next;

@@ -12,14 +12,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import model.Game_Matrix;
 
 /**
  * FXML Controller class
  *
- * @author Gabriel
+ * @author GBB
  */
 public class M__F_C implements Initializable {
-
     @FXML
     private Button g_m;
     @FXML
@@ -153,8 +153,10 @@ public class M__F_C implements Initializable {
     @FXML
     private Button b7_0;
     
-    private Boolean begin = false;
-    private Boolean ga_mo = false;
+     Game_Matrix Matrix_Main;
+    
+    private boolean begin = false;
+    private boolean ga_mo = false;
 
     /**
      * Initializes the controller class.
