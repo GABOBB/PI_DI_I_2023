@@ -153,7 +153,7 @@ public class M__F_C implements Initializable {
     @FXML
     private Button b7_0;
     
-     Game_Matrix Matrix_Main;
+    private Game_Matrix Matrix_Main;
     
     private boolean begin = false;
     private boolean ga_mo = false;
@@ -165,36 +165,39 @@ public class M__F_C implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        this.Matrix_Main = new Game_Matrix(10);
     }    
 
     @FXML
     private void game_mode(ActionEvent event) {
         if(!this.begin){
-            System.out.println("hard mode activated");
-            //insertar cambio de imagen
-        }else{
-            System.out.println("ez mode activated");
-            //insertar cambio de imagen
+            if(!this.ga_mo){
+                System.out.println("hard mode activated");
+                //insertar cambio de imagen
+                
+            }else{
+                System.out.println("ez mode activated");
+                //insertar cambio de imagen
+            }
+            this.ga_mo=!this.ga_mo;
         }
-        this.ga_mo=!this.ga_mo;
-        this.begin=!this.begin;
     }
 
     @FXML
     private void cords_selected(MouseEvent e) {
+        if(!this.begin){this.begin=true;}
+        
         Button x = (Button) e.getSource();
         int i = Integer.parseInt(x.getId().charAt(1)+"");
         int j = Integer.parseInt(x.getId().charAt(3)+"");
-        
+
         if ("PRIMARY".equals(e.getButton().toString())){
             System.out.println("der "+i+" "+j);
-            
+            System.out.println(this.Matrix_Main.Player_S(i, j));
         }
         if ("SECONDARY".equals(e.getButton().toString())){
             System.out.println("iz "+i+" "+j);
-        }
+        }   
         
     }
-    
 }

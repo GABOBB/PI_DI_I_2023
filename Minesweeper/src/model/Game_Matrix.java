@@ -35,13 +35,18 @@ public class Game_Matrix {
         for(int c=0;c<this.bmbs;c++){//genera una iteracion por cada bomba que debe poner
             int i = Rndm.random_int(8);//escoge una fila de manera aleatoria
             int j = Rndm.random_int(8);//escoge una columba de manera aleatoria
-            N_d_e N_new = new N_d_e(null,null,i+""+j);//genera un nodo para a;adirlo a la lista de bombas
-            if(!bombs.srch_N(N_new)){//revisa que no exista una bomba en esas cordenadas
-                this.matrix[i][j]="Bomb";//marca esa pocicion de la matriz como bomba 
-                this.bombs.add_l(N_new);//a;ade el nodo a la lista de bombas
-            }else{//en caso de que la casilla ya tenga una bomba a;ade una iteracion mas
+            
+            if(!(i<6 && i>3) && !(j<6 && j>3)){//se asegura que no se ponga una bomba en las casillas sentrales
+                N_d_e N_new = new N_d_e(null,null,i+""+j);//genera un nodo para a;adirlo a la lista de bombas
+                if(!bombs.srch_N(N_new)){//revisa que no exista una bomba en esas cordenadas
+                    this.matrix[i][j]="Bomb";//marca esa pocicion de la matriz como bomba 
+                    this.bombs.add_l(N_new);//a;ade el nodo a la lista de bombas
+                }else{//en caso de que la casilla ya tenga una bomba a;ade una iteracion mas
+                    c--;
+                }
+            }else{//en caso de que la casilla sea central se desecha y se retrocede el contador
                 c--;
-            }   
+            }
         }
     }
     /**
