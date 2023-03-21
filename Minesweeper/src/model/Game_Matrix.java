@@ -69,4 +69,31 @@ public class Game_Matrix {
             }
         }
     }
+    
+    public void generate_num(){
+        for (int i=0; i<8; i++){//este for se usa para seleccionar cada fila de la matriz principal
+            for(int j=0; j<8; j++){//este for se usa para seleccionar cada colubna de la matriz princiapl
+                
+                if(!"Bomb".equals(this.matrix[i][j])){//se asegura que no hay una bomba en esa cassilla para poder seguir
+                    
+                    int num_bombs=0;//inicializa el integer que guarda la cantidad de bombas circundates
+                    
+                    for(int ix=(i-1); i<(i+2); ix++){//este for recorre las filas de la matrix auxiliar generada por las casillas circundantes         
+                        for(int jx=(j-1); i<(j+2); jx++){//este for recorre las columnas de la matriz auxiliar generada por las casillas circundantes
+                            try{
+                                
+                                if((ix!=i && jx != j) && "Bomb".equals(this.matrix[ix][jx])){//revisa que si la casilla tiene una bomba y que no sea la casilla principal de la iteracion principal
+                                    num_bombs++;//si la casilla circundante tiene una bomba suma uno a la cantidad de bombas
+                                    
+                                }
+                                
+                            }catch(Exception E){
+                            }
+                        }
+                    }
+                    this.matrix[i][j]=num_bombs+"";//cuando terminan las iteraciones secundarias asigna la cantidad de bombas a la casilla
+                }
+            }
+        }
+    }
 }
