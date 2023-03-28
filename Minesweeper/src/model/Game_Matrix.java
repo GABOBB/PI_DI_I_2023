@@ -26,6 +26,8 @@ public class Game_Matrix {
         this.shots = 8*8-b;//genera el numero de casillas sin una bomba 
         this.bmbs = b;//carga el parametro como la cantidad de bombas en el juego
         generate_M();//llama al metodo que genera las bombas en la matriz
+        //generate_num();
+        prnt_mtrx();
     }
     /**
      * este metodo genera una cantidad n de casillas con 'bombas' 
@@ -36,10 +38,14 @@ public class Game_Matrix {
             int i = Rndm.random_int(8);//escoge una fila de manera aleatoria
             int j = Rndm.random_int(8);//escoge una columba de manera aleatoria
             
-            if(!(i<6 && i>3) && !(j<6 && j>3)){//se asegura que no se ponga una bomba en las casillas sentrales
-                N_d_e N_new = new N_d_e(null,null,i+""+j);//genera un nodo para a;adirlo a la lista de bombas
+            System.out.println(c);
+            
+            if((i!=4 && i!=5)&&(j!=4 && j!=5)){//(!(i<6 && i>3) && !(j<6 && j>3)){//se asegura que no se ponga una bomba en las casillas sentrales
+                N_d_e N_new = new N_d_e(null,null,i+" "+j);//genera un nodo para a;adirlo a la lista de bombas
                 if(!bombs.srch_N(N_new)){//revisa que no exista una bomba en esas cordenadas
                     this.matrix[i][j]="Bomb";//marca esa pocicion de la matriz como bomba 
+                    System.out.println(this.matrix[i][j]);
+                    //this.add_nums(i, j);
                     this.bombs.add_l(N_new);//a;ade el nodo a la lista de bombas
                 }else{//en caso de que la casilla ya tenga una bomba a;ade una iteracion mas
                     c--;
@@ -48,6 +54,20 @@ public class Game_Matrix {
                 c--;
             }
         }
+    }
+    
+    private void add_nums(int i, int j){
+        int x = i-1; int y = j-1;
+        int bombs = 0;
+        for(;x<=i+1;x++){
+            for(;y<=j+1;y++){
+                
+                if(this.matrix[x][y].equals("Bomb")){
+                    bombs+=1;
+                }
+            }
+        }
+        this.matrix[x][y]=bombs+"";
     }
     /**
      * este metodo rebisa que codigo hay en la posicion de la matriz i,j
@@ -62,35 +82,43 @@ public class Game_Matrix {
     /**
      * este metodo recorre la matriz y la imprime en consola
      */
-    public void prnt_mtrx(){
+    private void prnt_mtrx(){
         for(String i[] : this.matrix){
+            String fila="";
             for(String j : i){
-                System.out.println(j+"");
+                if(j!=null){
+                    fila+=" "+j;
+                }else{
+                    fila+="  ---";
+                }
             }
+            System.out.println(fila);
         }
     }
     
-    public void generate_num(){
+    private void generate_num(){
         for (int i=0; i<8; i++){//este for se usa para seleccionar cada fila de la matriz principal
             for(int j=0; j<8; j++){//este for se usa para seleccionar cada colubna de la matriz princiapl
                 
-                if(!"Bomb".equals(this.matrix[i][j])){//se asegura que no hay una bomba en esa cassilla para poder seguir
+                if(!(this.matrix[i][j].equals("Bomb"))){//se asegura que no hay una bomba en esa cassilla para poder seguir
                     
                     int num_bombs=0;//inicializa el integer que guarda la cantidad de bombas circundates
                     
-                    for(int ix=(i-1); i<(i+2); ix++){//este for recorre las filas de la matrix auxiliar generada por las casillas circundantes         
-                        for(int jx=(j-1); i<(j+2); jx++){//este for recorre las columnas de la matriz auxiliar generada por las casillas circundantes
+                    for(int ix=(i-1); ix<(i+2); ix++){//este for recorre las filas de la matrix auxiliar generada por las casillas circundantes         
+                        for(int jx=(j-1); jx<=(j+2); jx++){//este for recorre las columnas de la matriz auxiliar generada por las casillas circundantes
+                            
                             try{
                                 
                                 if((ix!=i && jx != j) && "Bomb".equals(this.matrix[ix][jx])){//revisa que si la casilla tiene una bomba y que no sea la casilla principal de la iteracion principal
-                                    num_bombs++;//si la casilla circundante tiene una bomba suma uno a la cantidad de bombas
-                                    
+                                    num_bombs++;//si la casilla circundante tiene una bomba suma uno a la cantidad de bombas   
                                 }
                                 
                             }catch(Exception E){
                             }
+                            System.out.println(num_bombs + "("+ix +" "+ jx+")");
                         }
                     }
+                    System.out.println(num_bombs);
                     this.matrix[i][j]=num_bombs+"";//cuando terminan las iteraciones secundarias asigna la cantidad de bombas a la casilla
                 }
             }

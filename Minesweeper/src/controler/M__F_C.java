@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.Game_Matrix;
@@ -22,8 +23,6 @@ import model.Game_Matrix;
 public class M__F_C implements Initializable {
     @FXML
     private Button g_m;
-    @FXML
-    private ImageView image_g_m;
     @FXML
     private Button b0_0;
     @FXML
@@ -153,6 +152,12 @@ public class M__F_C implements Initializable {
     @FXML
     private Button b7_0;
     
+    private Image img_b;
+    private Image img_b_r;
+    private Image img_c_f;
+    private Image img_c_d;
+    private Image img_c_s;
+    
     private Game_Matrix Matrix_Main;
     
     private boolean begin = false;
@@ -166,6 +171,9 @@ public class M__F_C implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.Matrix_Main = new Game_Matrix(10);
+        this.load_img();
+        
+        this.g_m.setGraphic(new ImageView(this.img_c_f));
     }    
 
     @FXML
@@ -173,10 +181,11 @@ public class M__F_C implements Initializable {
         if(!this.begin){
             if(!this.ga_mo){
                 System.out.println("hard mode activated");
-                //insertar cambio de imagen
+                this.g_m.setGraphic((new ImageView(this.img_c_d)));
                 
             }else{
                 System.out.println("ez mode activated");
+                this.g_m.setGraphic((new ImageView(this.img_c_f)));
                 //insertar cambio de imagen
             }
             this.ga_mo=!this.ga_mo;
@@ -186,6 +195,7 @@ public class M__F_C implements Initializable {
     @FXML
     private void cords_selected(MouseEvent e) {
         if(!this.begin){this.begin=true;}
+        String info="";
         
         Button x = (Button) e.getSource();
         int i = Integer.parseInt(x.getId().charAt(1)+"");
@@ -194,10 +204,28 @@ public class M__F_C implements Initializable {
         if ("PRIMARY".equals(e.getButton().toString())){
             System.out.println("der "+i+" "+j);
             System.out.println(this.Matrix_Main.Player_S(i, j));
+            if((this.Matrix_Main.Player_S(i, j)!=null) && this.Matrix_Main.Player_S(i, j).equals("Bomb")){
+                x.setGraphic((new ImageView(this.img_b_r)));
+            } 
         }
         if ("SECONDARY".equals(e.getButton().toString())){
             System.out.println("iz "+i+" "+j);
-        }   
+        }
+        
+    }
+    
+    private void load_img(){
+        URL l_bomba = getClass().getResource("/auxiliar/cara_feliz.png");
+        URL l_bom_r = getClass().getResource("/auxiliar/bomba_red.png");
+        URL l_c_f = getClass().getResource("/auxiliar/cara_feliz.png");
+        URL l_c_d = getClass().getResource("/auxiliar/cara_muerta.png");
+        URL l_c_s = getClass().getResource("/auxiliar/cara_sorp.png");
+        
+        this.img_b = new Image(l_bomba.toString(),20,20,false,true);
+        this.img_b_r = new Image(l_bom_r.toString(),20,20,false,true);
+        this.img_c_f = new Image(l_c_f.toString(),40,40,false,true);
+        this.img_c_d = new Image(l_c_d.toString(),40,40,false,true);
+        this.img_c_s = new Image(l_c_s.toString(),40,40,false,true);
         
     }
 }
