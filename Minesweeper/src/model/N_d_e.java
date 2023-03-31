@@ -10,10 +10,10 @@ package model;
  * @author GBB
  */
 public class N_d_e {
-    N_d_e next;
-    N_d_e prev;
-    Object data;
-    String id;
+    private N_d_e next;
+    private N_d_e prev;
+    private Object data;
+    private String id;
     
     public N_d_e (N_d_e n, N_d_e p, String Id, Object d){
         this.next = n;

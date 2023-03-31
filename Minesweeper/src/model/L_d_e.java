@@ -40,12 +40,32 @@ public class L_d_e {
         }
     }
     
+    public void prnt_lst(){
+        N_d_e actual = this.first;
+        while(actual != null){
+            System.out.print(actual.get_Id()+"   ");
+            actual = actual.get_N();
+        }
+    }
+    
     public N_d_e srch_Id(String id){
         N_d_e temp = this.first;
         while(temp != null && temp.get_Id()!=id){
             temp = temp.get_N();
         }
         return temp;
+    }
+    
+    public boolean srch_Id(String id, boolean T){
+        N_d_e temp = this.first;
+        while(temp != null){
+            if(temp.get_Id()==id){
+                return true;
+            }else{
+                temp = temp.get_N();
+            }  
+        }
+        return false;
     }
     
     public void d_srch_Id(String id){

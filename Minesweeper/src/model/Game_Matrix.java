@@ -6,8 +6,7 @@ package model;
 
 import controler.Rndm;
 
-/**
- *  esta clase es la responsable de manterner la informacion para la logica del juego
+/**esta clase es la responsable de manterner la informacion para la logica del juego
  * @author GBB
  */
 public class Game_Matrix {
@@ -16,8 +15,7 @@ public class Game_Matrix {
     private int shots;//la cantidad de casillas sin bomba restantes
     private int bmbs;//la cantidad de bombas
     
-    /**
-     * carga los valores vacios y genera la matriz y la lista de bombas
+    /**carga los valores vacios y genera la matriz y la lista de bombas
      * @param b : este se toma para generar la cantidad de bombas
      */
     public Game_Matrix(int b){
@@ -29,46 +27,58 @@ public class Game_Matrix {
         //generate_num();
         prnt_mtrx();
     }
-    /**
-     * este metodo genera una cantidad n de casillas con 'bombas' 
+    
+    /**este metodo genera una cantidad n de casillas con 'bombas' 
      * this.bmbs delimita la cantidad de bombas a generar
      */
     private void generate_M(){
-        for(int c=0;c<this.bmbs;c++){//genera una iteracion por cada bomba que debe poner
+        int c=0;
+        while(c<this.bmbs){//genera una iteracion por cada bomba que debe poner
             int i = Rndm.random_int(8);//escoge una fila de manera aleatoria
             int j = Rndm.random_int(8);//escoge una columba de manera aleatoria
             
-            System.out.println(c);
-            
-            if((i!=4 && i!=5)&&(j!=4 && j!=5)){//(!(i<6 && i>3) && !(j<6 && j>3)){//se asegura que no se ponga una bomba en las casillas sentrales
+            if(!((i==4 || i==3) & (j==4 || j==3))){//(!(i<6 && i>3) && !(j<6 && j>3)){//se asegura que no se ponga una bomba en las casillas sentrales
+                
                 N_d_e N_new = new N_d_e(null,null,i+" "+j);//genera un nodo para a;adirlo a la lista de bombas
-                if(!bombs.srch_N(N_new)){//revisa que no exista una bomba en esas cordenadas
+                
+                if(!bombs.srch_Id(N_new.get_Id(),false)){//revisa que no exista una bomba en esas cordenadas
+                    
                     this.matrix[i][j]="Bomb";//marca esa pocicion de la matriz como bomba 
-                    System.out.println(this.matrix[i][j]);
-                    //this.add_nums(i, j);
+                    this.gen_num(i, j);
                     this.bombs.add_l(N_new);//a;ade el nodo a la lista de bombas
-                }else{//en caso de que la casilla ya tenga una bomba a;ade una iteracion mas
-                    c--;
-                }
-            }else{//en caso de que la casilla sea central se desecha y se retrocede el contador
-                c--;
+                    c++;
+                }//else{//en caso de que la casilla ya tenga una bomba a;ade una iteracion mas
+                   // c--; 
+                //}
             }
+            //else{//en caso de que la casilla sea central se desecha y se retrocede el contador 
+            //    c--;
+            //}
+        
         }
     }
     
-    private void add_nums(int i, int j){
-        int x = i-1; int y = j-1;
-        int bombs = 0;
-        for(;x<=i+1;x++){
-            for(;y<=j+1;y++){
-                
-                if(this.matrix[x][y].equals("Bomb")){
-                    bombs+=1;
+    private void gen_num(int x, int y){
+        for(int i = (x-1);i<(x+2);i++){
+            for(int j = (y-1);j<(y+2);j++){
+                try{
+                    if(this.matrix[i][j]!="Bomb"){
+                        if(this.matrix[i][j]==null){
+                            this.matrix[i][j]=1+"";
+                        }else{
+                            int temp = Integer.parseInt(this.matrix[i][j]);
+                            temp += 1;
+                            this.matrix[i][j]= temp+"";
+                        }
+                    }  
+                }catch(Exception e){
+                    System.out.println(e);
                 }
             }
-        }
-        this.matrix[x][y]=bombs+"";
+        }   
+    
     }
+    
     /**
      * este metodo rebisa que codigo hay en la posicion de la matriz i,j
      * @param i : un intiger para las filas de la matriz
@@ -82,20 +92,34 @@ public class Game_Matrix {
     /**
      * este metodo recorre la matriz y la imprime en consola
      */
-    private void prnt_mtrx(){
+    public void prnt_mtrx(){
         for(String i[] : this.matrix){
             String fila="";
             for(String j : i){
                 if(j!=null){
-                    fila+=" "+j;
+                    if(j.equals("Bomb")){
+                            fila+=" "+j+" ";
+                    }else{
+                        fila+=" _"+j+"_ ";
+                    }
                 }else{
-                    fila+="  ---";
+                    fila+=" _0_ ";
                 }
             }
             System.out.println(fila);
         }
     }
     
+    public void setCords(int i, int j, String c, boolean x){
+        if(x){
+            this.matrix[i][j] = c;
+        }else{
+            c += this.matrix[i][j];
+            this.matrix[i][j] = c; 
+        }
+    }
+        
+    /*
     private void generate_num(){
         for (int i=0; i<8; i++){//este for se usa para seleccionar cada fila de la matriz principal
             for(int j=0; j<8; j++){//este for se usa para seleccionar cada colubna de la matriz princiapl
@@ -124,4 +148,18 @@ public class Game_Matrix {
             }
         }
     }
+        private void add_nums(int i, int j){
+        int x = i-1; int y = j-1;
+        int bombs = 0;
+        for(;x<=i+1;x++){
+            for(;y<=j+1;y++){
+                
+                if(this.matrix[x][y].equals("Bomb")){
+                    bombs+=1;
+                }
+            }
+        }
+        this.matrix[x][y]=bombs+"";
+    }
+    */
 }
