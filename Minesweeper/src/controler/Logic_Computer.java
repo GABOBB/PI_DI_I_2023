@@ -27,7 +27,7 @@ public class Logic_Computer {
         N_d_e temp = P_list.srch_indx(x);
         P_list.d_srch_indx(x);
         
-        return temp.get_Id().charAt(0)+ temp.get_Id().charAt(2)+"";
+        return temp.get_Id();
     }
     
     

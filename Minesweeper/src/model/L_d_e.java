@@ -68,7 +68,7 @@ public class L_d_e {
         return false;
     }
     
-    public void d_srch_Id(String id){
+    public N_d_e d_srch_Id(String id){
         N_d_e temp = this.first;
         while(temp!=null && temp.get_Id()!=id){
             temp = temp.get_N();
@@ -76,6 +76,7 @@ public class L_d_e {
         temp.get_P().set_N(temp.get_N());
         temp.get_N().set_P(temp.get_P());
         this.size--;
+        return temp;
     }
     
     public N_d_e srch_indx(int x){
@@ -86,7 +87,7 @@ public class L_d_e {
         return temp;
     }
     
-    public void d_srch_indx(int x){
+    public N_d_e d_srch_indx(int x){
         N_d_e temp = this.first;
         for(int i=0; i<x; i++){
             temp = temp.get_N();
@@ -94,6 +95,7 @@ public class L_d_e {
         temp.get_P().set_N(temp.get_N());
         temp.get_N().set_P(temp.get_P());
         this.size--;
+        return temp;
     }
     
     public Boolean srch_N(N_d_e N){
@@ -104,7 +106,7 @@ public class L_d_e {
         return temp!=null;
     }
     
-    public void d_srch_N(N_d_e N){
+    public N_d_e d_srch_N(N_d_e N){
         N_d_e temp = this.first;
         while(temp != null && temp!= N){
             temp = temp.get_N();
@@ -114,5 +116,6 @@ public class L_d_e {
             temp.get_N().set_P(temp.get_P());
             this.size--;
         }
+        return temp;
     }
 }

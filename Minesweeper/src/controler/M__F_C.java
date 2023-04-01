@@ -157,6 +157,7 @@ public class M__F_C implements Initializable {
     private Image img_c_f;
     private Image img_c_d;
     private Image img_c_s;
+    private Image img_c_g;
     
     private Image img_bndr;
     
@@ -174,6 +175,8 @@ public class M__F_C implements Initializable {
     private Image img_5_c;
     
     private Game_Matrix Matrix_Main;
+    
+    private Logic_Computer COMPUTER;
     
     private Button btn_m[][] = new Button[8][8];
     
@@ -193,15 +196,18 @@ public class M__F_C implements Initializable {
         this.Matrix_Main = new Game_Matrix(10);
         this.load_img();
         
+        this.COMPUTER = new Logic_Computer();
+        
         this.g_m.setGraphic(new ImageView(this.img_c_f));
     }    
 
     @FXML
     private void game_mode(ActionEvent event) {
+        this.Matrix_Main.prnt_mtrx();
         if(!this.begin){
             if(!this.ga_mo){
                 System.out.println("hard mode activated");
-                this.g_m.setGraphic((new ImageView(this.img_c_d)));
+                this.g_m.setGraphic((new ImageView(this.img_c_s)));
                 
             }else{
                 System.out.println("ez mode activated");
@@ -210,12 +216,31 @@ public class M__F_C implements Initializable {
             }
             this.ga_mo=!this.ga_mo;
         }
-        this.Matrix_Main.prnt_mtrx();
+        
     }
-
+    /**
+     * este metodo sencarga de manejar si la computadora tira de manera alatoria o en el modo avando
+     */
+    private void c_play(){
+        if(this.ga_mo){//revisa si la  variable buleana para saber el modo de juego
+            System.out.println("tiro dificil");
+            
+        }else{
+            
+            String shoot = this.COMPUTER.ez_shoot();
+            int i = Integer.parseInt(shoot.charAt(0)+"");
+            int j = Integer.parseInt(shoot.charAt(2)+"");
+            
+            System.out.println("tiro ez "+ i + " "+ j + "---" + this.Matrix_Main.get_cords(i, j));
+            plc_img(this.Matrix_Main.get_cords(i, j)+"_c",this.btn_m[i][j],i,j);
+        }
+        
+        this.playable = true;//restaura la posibilidad del jugador para tirar
+    }
+    
     @FXML
     private void cords_selected(MouseEvent e) {
-        if(this.playable){
+        if(this.playable & !this.lose){
             if(!this.begin){this.begin=true;}
 
             String info="";
@@ -227,44 +252,59 @@ public class M__F_C implements Initializable {
             if ("PRIMARY".equals(e.getButton().toString())){
 
                 //System.out.println("der "+i+" "+j);
-                System.out.println(this.Matrix_Main.Player_S(i, j) + "@der "+i+" "+j);
-                plc_img(this.Matrix_Main.Player_S(i, j),x,i,j);
-
+                System.out.println(this.Matrix_Main.get_cords(i, j) + "@der "+i+" "+j);
+                if(!this.Matrix_Main.get_cords(i,j).contains("@clkd") & !this.Matrix_Main.get_cords(i,j).contains("@bndr")){
+                    plc_img(this.Matrix_Main.get_cords(i, j),x,i,j);
+                    this.Matrix_Main.setCords(i, j, "@clkd", false);
+                    this.playable = false;
+                    this.c_play();
+                }
             }
             if ("SECONDARY".equals(e.getButton().toString())){
-                
-                try{
-                    String temp = this.Matrix_Main.Player_S(i, j).split("@")[0];
-                    System.out.println(this.Matrix_Main.Player_S(i, j));
-                    System.out.println(temp);
-                    x.setGraphic(null);
-                    this.Matrix_Main.setCords(i, j, temp, true);
-                }catch(Exception ex){
+                if(!this.Matrix_Main.get_cords(i,j).contains("@clkd") & !this.Matrix_Main.get_cords(i,j).contains("@bndr")){
+                    this.Matrix_Main.setCords(i, j, "@bndr", false);
                     plc_img("bndr", x, i, j);
-                } 
+           
+                }else if(this.Matrix_Main.get_cords(i,j).contains("@bndr")){
+                
+                
+                }
             }
+        //this.playable = false;
+        //this.c_play();    
         }
     }
     private void plc_img(String code, Button b, int i, int j){
         switch(code){
-            case null:
+            case "0":
                 b.setGraphic(new ImageView(this.img_0));
                 /*for(int x = -1; x < 2; x++){
                     for(int y = -1; y < 2; y++){
-                        if(!(x==0 & y==0)){    
+                        if(x!=0 & y!=0){    
                             try{
-                            plc_img(this.Matrix_Main.Player_S(i+x,j+y),this.btn_m[i+x][j+y],i+x,j+y);
+                                plc_img(this.Matrix_Main.get_cords(i+x,j+y),this.btn_m[i+x][j+y],i+x,j+y);
                             }catch(Exception e){
                             }
                         }
-                }}*/
+                    }
+                }*/
                 break;
             case "bndr":
                 b.setGraphic(new ImageView(this.img_bndr));
-                this.Matrix_Main.setCords(i, j, "bndr@", false);
+                break;
+            case "gan":
+                this.g_m.setGraphic(new ImageView(this.img_c_g));
+                this.playable = false;
                 break;
             case "Bomb":
                 b.setGraphic(new ImageView(this.img_b_r));
+                this.g_m.setGraphic(new ImageView(this.img_c_d));
+                this.lose = true;
+                break;
+            case "Bomb_c":
+                b.setGraphic(new ImageView(this.img_b));
+                this.g_m.setGraphic(new ImageView(this.img_c_g));
+                this.playable = false;
                 break;
             case "1":
                 b.setGraphic(new ImageView(this.img_1));
@@ -309,6 +349,7 @@ public class M__F_C implements Initializable {
         URL l_c_f = getClass().getResource("/auxiliar/cara_feliz.png");
         URL l_c_d = getClass().getResource("/auxiliar/cara_muerta.png");
         URL l_c_s = getClass().getResource("/auxiliar/cara_sorp.png");
+        URL l_c_g = getClass().getResource("/auxiliar/cara_fachera.png");
         URL l_bndr = getClass().getResource("/auxiliar/bndr.png");
         URL l_0 = getClass().getResource("/auxiliar/0.png");
         URL l_0_c = getClass().getResource("/auxiliar/0_c.png");
@@ -328,6 +369,7 @@ public class M__F_C implements Initializable {
         this.img_c_f = new Image(l_c_f.toString(),40,40,false,true);
         this.img_c_d = new Image(l_c_d.toString(),40,40,false,true);
         this.img_c_s = new Image(l_c_s.toString(),40,40,false,true);
+        this.img_c_g = new Image(l_c_g.toString(),40,40,false,true);
         this.img_bndr = new Image(l_bndr.toString(),20,20,false,true);
         this.img_0 = new Image(l_0.toString(),20,20,false,true);
         this.img_1 = new Image(l_1.toString(),20,20,false,true);
