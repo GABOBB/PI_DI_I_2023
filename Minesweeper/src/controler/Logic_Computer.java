@@ -22,12 +22,24 @@ public class Logic_Computer {
         this.I_list = new L_d_e();
     }
     
-    public String ez_shoot(){
+    public String c_shoot(boolean t){
+        if(t){
+            return this.hard_shoot();
+        }else{
+            return this.ez_shoot();
+        }
+    }
+    
+    private String ez_shoot(){
         int x = Rndm.random_int(P_list.get_size()-1);
         N_d_e temp = P_list.srch_indx(x);
         P_list.d_srch_indx(x);
         
         return temp.get_Id();
+    }
+    
+    private String hard_shoot(){
+        return "";
     }
     
     
