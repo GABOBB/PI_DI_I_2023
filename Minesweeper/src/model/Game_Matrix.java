@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import controler.Rndm;
 
 /**esta clase es la responsable de manterner la informacion para la logica del juego
- * @author GBB
+ * @author G.B.B
  */
 public class Game_Matrix {
     private L_d_e bombs;//una lista de donde se encuntran las bombas
@@ -41,7 +37,7 @@ public class Game_Matrix {
             
             //if(!((i==4 || i==3) & (j==4 || j==3))){//(!(i<6 && i>3) && !(j<6 && j>3)){//se asegura que no se ponga una bomba en las casillas sentrales
                 
-                N_d_e N_new = new N_d_e(null,null,i+" "+j);//genera un nodo para a;adirlo a la lista de bombas
+                N_d_e N_new = new N_d_e(i+" "+j);//genera un nodo para a;adirlo a la lista de bombas
                 
                 if(!bombs.srch_Id(N_new.get_Id(),false)){//revisa que no exista una bomba en esas cordenadas
                     

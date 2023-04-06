@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package controler;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,12 +10,15 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import model.Game_Matrix;
+import model.Pila;
+import javax.swing.Timer;
 
 /**
  * FXML Controller class
  *
- * @author GBB
+ * @author G.B.B
  */
 public class M__F_C implements Initializable {
     @FXML
@@ -174,17 +174,31 @@ public class M__F_C implements Initializable {
     private Image img_4_c;
     private Image img_5_c;
     
+    private Timer timer;
+    
     private Game_Matrix Matrix_Main;
     
     private Logic_Computer COMPUTER;
     
+    private Pila sugerencia;
+    
     private Button btn_m[][] = new Button[8][8];
+    
+    private int time;
     
     private boolean begin = false;
     private boolean lose = false;
     private boolean ga_mo = false;
     private boolean playable = true;
 
+    private int contador;
+    @FXML
+    private Text num_bombs;
+    @FXML
+    private Text timer_lb;
+    @FXML
+    private Button sugenrencia_bt;
+    
     /**
      * Initializes the controller class.
      * @param url
@@ -192,14 +206,29 @@ public class M__F_C implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        int b_c = 10;
         lst_b();//esta llamada carga todos los botones en un array :(
-        this.Matrix_Main = new Game_Matrix(10);// esta llamada inicializa la matriz con una cantidad de bombas (10) y sus indicadores correspondientes
+        this.Matrix_Main = new Game_Matrix(b_c);// esta llamada inicializa la matriz con una cantidad de bombas (10) y sus indicadores correspondientes
         this.load_img();//esta llamada carga todas la imagenes
+        
+        this.num_bombs.setText(b_c+"");
+        this.contador = 0;
+        this.time=0;
         
         this.COMPUTER = new Logic_Computer();// se inicializa la clase encargada de la logica de los tiros en de la computadora
         
+        this.sugerencia = new Pila();
+        
         this.g_m.setGraphic(new ImageView(this.img_c_f));//carga la imagen inicial en el boton de seleccion de modo de juego
-    }    
+        
+        this.timer = new Timer(1000, (java.awt.event.ActionEvent e) -> {
+            this.time++;
+            Platform.runLater(()->this.timer_lb.setText(String.valueOf(this.time)));
+        });
+    }   
+    
+    
+    
 /**
  * este metodo cambia el modo de juego antes de que la partida comience
  * una ves hecho el primer tiro se le restringe el uso a solo imprimir la matriz 
@@ -232,12 +261,25 @@ public class M__F_C implements Initializable {
         int i = Integer.parseInt(shoot.charAt(0)+"");//se obtiene la fila de las cordenadas 
         int j = Integer.parseInt(shoot.charAt(2)+"");//se obtiene la columna de las cordenadas
 
-        System.out.println(i + " "+ j + " --- " + this.Matrix_Main.get_cords(i, j));// por control imprime las cordenadas y lo que estas tienen 
-
-        plc_img(this.Matrix_Main.get_cords(i, j)+"_c",this.btn_m[i][j],i,j);//hace la llamada a colocar la imagen correspondiente al boton en las cordenadas i,j
-        this.Matrix_Main.setCords(i, j, "@clkd", false);//a;ade a las cordenadas el indicador de que la casilla ya fue cliqueada
+        System.out.println(i + " " + j + " /// " + this.Matrix_Main.get_cords(i, j));// por control imprime las cordenadas y lo que estas tienen 
+        String info = this.Matrix_Main.get_cords(i, j);
         
+        if(info.contains("@clkd")){
+            c_play();
+            return;
+        }
+        info = info.split("@")[0];
+        
+        plc_img(info+"_c",this.btn_m[i][j],i,j);//hace la llamada a colocar la imagen correspondiente al boton en las cordenadas i,j
+        //this.Matrix_Main.setCords(i, j, "@clkd", false);//a;ade a las cordenadas el indicador de que la casilla ya fue cliqueada
+
+        if(!info.equals("Bomb")){
         this.playable = true;//restaura la posibilidad del jugador para tirar
+        }else{
+            this.plc_img("gan", this.g_m, i, j);
+            this.timer.stop();
+        }   
+        
     }
     
     /**
@@ -251,8 +293,11 @@ public class M__F_C implements Initializable {
      */
     @FXML
     private void cords_selected(MouseEvent e) {
-        if(this.playable & !this.lose){//se asegura que sea turno del jugador y que no se halla terminado el juego
-            if(!this.begin){this.begin=true;}//si el primer tiro de la partida se cambia el balor a iniciado
+        if(this.playable && !this.lose){//se asegura que sea turno del jugador y que no se halla terminado el juego
+            if(!this.begin){
+                this.begin=true;
+                this.timer.start();
+            }//si el primer tiro de la partida se cambia el balor a iniciado
             
             Button x = (Button) e.getSource();//se obtiene el boton que realiza el tiro
             int i = Integer.parseInt(x.getId().charAt(1)+"");//separa la cordenada i dada por el nombre del boton
@@ -265,10 +310,12 @@ public class M__F_C implements Initializable {
                 if(!info.contains("@clkd") & !info.contains("@bndr")){//se asegura que la casilla no tenga bandera o que no haya sido juegada 
                     System.out.println(info + "@iz "+i+" "+j);//como control se imprime en consola las cordenadas con su informacion correspondiente
                     plc_img(info,x,i,j);//se realiza la llamada para colocar la imagen correspondiente en le boton seleccionado
-                    this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
+                    
                     this.playable = false;//le quita la posibilidad al jugador de tirar para que no tire fuera de su turno
                     if(!this.Matrix_Main.get_cords(i, j).contains("Bomb")){//se verifica que la casilla no fuera una bomba 
                         this.c_play();//si no lo es se hace la llamada al metodo que genera la jugada de la computadora
+                    }else{
+                    this.timer.stop();
                     }
                         
                 }
@@ -280,6 +327,9 @@ public class M__F_C implements Initializable {
                     this.Matrix_Main.setCords(i, j, "@bndr", false);//a;ade a la matriz la etidqueta de que ha sido colocada una bandera en la casilla
                     plc_img("bndr", x, i, j);//se realiza la llamada para colocar la imagen correspondiente al boton seleccionado
                     
+                    int bombs_temp = Integer.parseInt(this.num_bombs.getText());
+                    this.num_bombs.setText((bombs_temp - 1)+"");
+                    
                     this.playable = false;//le quita la posibilidad al jugador de tirar fuera de su turno
                     this.c_play();//realiza la llamada al metodo que controla el tiro de la computadora
            
@@ -289,12 +339,53 @@ public class M__F_C implements Initializable {
                     String temp = info.split("@")[0];//obtiene le valor origianl en las cordenandas
                     this.Matrix_Main.setCords(i, j, temp, true);//lo guarda en la posicion en la que estba pero ahora sin el indicador de bandera
                     
+                    int bombs_temp = Integer.parseInt(this.num_bombs.getText());
+                    this.num_bombs.setText((bombs_temp + 1)+"");
+                    
                     this.playable = false;//le quita la posibilidad al jugador de tirar fuera de su turno
                     this.c_play();//realiza la llamada al metodo que controla el tiro de la computadora
                 }
             }
-           
+            if(++this.contador == 2 && !this.lose){
+                this.contador = 0;
+                this.sugerencia.consejo(Matrix_Main);
+                this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());
+                this.sugenrencia_bt.setDisable(false);
+            }
         }
+    }
+    
+        @FXML
+    private void juega_sug(ActionEvent event) {
+        
+        if(!this.playable && this.lose && this.sugerencia.get_num()<0){return;}
+        
+        String temp = this.sugerencia.pop();
+            
+        int i = Integer.parseInt(temp.split(" ")[0]);//separa la cordenada i dada por el nombre del boton
+        int j = Integer.parseInt(temp.split(" ")[1]);//separa la cordenada j dada por el nombre del boton
+        
+        System.out.println(temp+" estes son las coordenadas sugeridas" + i + " " + j);
+        
+        String info = this.Matrix_Main.get_cords(i, j);
+        
+        if(info.contains("@clkd") || info.contains("@bndr")){
+        this.juega_sug(event);
+        return;
+        }
+        
+        this.plc_img(info, this.btn_m[i][j], i, j);
+        
+        this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());
+        
+        
+        if(this.sugerencia.get_num() == 0){
+            this.sugenrencia_bt.setDisable(true);
+        }
+        
+        this.playable = false;//le quita la posibilidad al jugador de tirar fuera de su turno
+        this.c_play();//realiza la llamada al metodo que controla el tiro de la computadora
+
     }
     
     /**
@@ -308,64 +399,101 @@ public class M__F_C implements Initializable {
         
         switch(code){
             
-            case "bndr"://significa que debe de poner una bandera en el boton
+                case "bndr"://significa que debe de poner una bandera en el boton
                 b.setGraphic(new ImageView(this.img_bndr));
                 break;
             case "gan"://significa que debe poner la cara ganadora en el boton principal y detener el juego
                 this.g_m.setGraphic(new ImageView(this.img_c_g));
                 this.playable = false;
+                this.sugenrencia_bt.setDisable(true);
                 break;
             case "Bomb"://significa que debe poner una bomba roja en la casilla y detener el juego porque el jugador perdio
                 b.setGraphic(new ImageView(this.img_b_r));
                 this.g_m.setGraphic(new ImageView(this.img_c_d));
+                this.sugenrencia_bt.setDisable(true);
                 this.lose = true;
                 break;
             case "Bomb_c"://significa que debe poner una bomba en la casilla y detener el juego porque el jugador gano
                 b.setGraphic(new ImageView(this.img_b));
                 this.g_m.setGraphic(new ImageView(this.img_c_g));
+                this.sugenrencia_bt.setDisable(true);
                 this.playable = false;
                 break;
             case "0"://significa que debe poner la imagen correspondiente a cuando el tiro del jugador da en una casilla sin bombas circundantes
                 b.setGraphic(new ImageView(this.img_0));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
+                for(int x = (i - 1); x< (i+2); x++){
+                    for(int y = (j - 1); y < (j+2); y++){
+                        if(x==i && y==j){break;}
+                        try{
+                            System.out.println(x+" "+y);
+                            this.plc_img(this.Matrix_Main.get_cords(x, y),this.btn_m[x][y],x,y);
+
+                        }catch(Exception e){}
+                    }
+                }
                 break;
             case "1"://significa que debe poner la imagen correspondiente a cuando el tiro del jugador da en una casiila con una bomba circuandate
                 b.setGraphic(new ImageView(this.img_1));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "2"://significa que debe poner la imagen correspondietne a cuendo el tiro del jugador da en una casilla con dos bomnbas circundantes
                 b.setGraphic(new ImageView(this.img_2));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "3"://significa que debe poner la imagen correspondietne a cuando el tipo del jugador da en una casilla con tres bombas cirncundantes
                 b.setGraphic(new ImageView(this.img_3));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "4"://signfica qeu debe poner la imagen correspondiente a cuando el tiro del jugador da en una casilla con cuatro bombas circundantes
                 b.setGraphic(new ImageView(this.img_4));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "5"://significa que debe poner la imagen correspondiente a cuando el tiro del jugador da en una casilla con cinco bombas circundades
                 b.setGraphic(new ImageView(this.img_5));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "0_c"://sifnifica que debe poner la imagen correspondiente a cuando la computadora da en uan casiila con cero bombas circundantes
-                b.setGraphic(new ImageView(this.img_0));
+                b.setGraphic(new ImageView(this.img_0_c));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
+                for(int x = i-1; x< (i+2); x++){
+                    for(int y = (j - 1); y < (j+2); y++){
+                        if(x==i && y==j){break;}
+                        try{
+                            System.out.println(x+" "+y);
+                            this.plc_img(this.Matrix_Main.get_cords(x, y)+"_c",this.btn_m[x][y],x,y);
+
+                        }catch(Exception e){}
+                    }
+                }
                 break;
             case "1_c"://significa que debe poner la imagen correspondiente a cuando al ocmputadora da en una casilla con una bomba circundante
                 b.setGraphic(new ImageView(this.img_1_c));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "2_c"://signfinica que debe poner la imagen correspondiente a cuando la computadora da en una casilla con dos bombas circundantes
                 b.setGraphic(new ImageView(this.img_2_c));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "3_c"://significa que debe poner la imagen correspondiente a cuando la ocmputadora da en una casilla con tres bombas circunadantes
                 b.setGraphic(new ImageView(this.img_3_c));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "4_c"://significa que debe poner la imgaen correspontiende a cuando al computadora da en una casilla con cuatro bombas circundatnes
                 b.setGraphic(new ImageView(this.img_4_c));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             case "5_c"://significa que debe poner la imagen correspondiente a cuando la computadora da en cuna casilla con cinco bombas circuandatnes
                 b.setGraphic(new ImageView(this.img_5_c));
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//realiza la llamada al metodo que le a;ade el indiacador a la casilla que ya fie jugada
                 break;
             default://significa que hubo un error el el codigo no esta tipificado
-                System.err.println("codigo no reconocido");
+                System.out.println("codigo no reconocido"+ i+"---"+j);
                 break;
         }
     }
+    
+    
     
     /**
      * este metodo se encarga de cargar todas las imagenes y las guarda en atributos de la clase para facul acceso
@@ -434,4 +562,6 @@ public class M__F_C implements Initializable {
         this.btn_m[6] = f6; 
         this.btn_m[7] = f7; 
     }
+
+
 }

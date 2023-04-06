@@ -7,7 +7,7 @@ package model;
 /**
  *  esta clase es la que guarda los metodos necesarios para el 
  *  manejo de una lista doblemente enlazada 
- * @author GBB
+ * @author G.B.B
  */
 public class L_d_e {
     N_d_e first = null;
@@ -73,9 +73,20 @@ public class L_d_e {
         while(temp!=null && temp.get_Id()!=id){
             temp = temp.get_N();
         }
-        temp.get_P().set_N(temp.get_N());
-        temp.get_N().set_P(temp.get_P());
-        this.size--;
+        
+        if(temp == this.first){
+            temp.get_N().set_P(null);
+            this.first = temp.get_N();
+            this.size--;
+        }else if(temp == this.last){
+            temp.get_P().set_N(null);
+            this.last = temp;
+            this.size--;
+        }else if(temp!=null){
+            temp.get_P().set_N(temp.get_N());
+            temp.get_N().set_P(temp.get_P());
+            this.size--;
+        }
         return temp;
     }
     
@@ -84,6 +95,7 @@ public class L_d_e {
         for(int i=0; i<x; i++){
             temp = temp.get_N();
         }
+        
         return temp;
     }
     
@@ -92,8 +104,16 @@ public class L_d_e {
         for(int i=0; i<x; i++){
             temp = temp.get_N();
         }
-        temp.get_P().set_N(temp.get_N());
-        temp.get_N().set_P(temp.get_P());
+        if(temp == this.first){
+            temp.get_N().set_P(null);
+            this.first = temp.get_N();
+        }else if(temp == this.last){
+            temp.get_P().set_N(null);
+            this.last = temp.get_P();
+        }else{
+            temp.get_P().set_N(temp.get_N());
+            temp.get_N().set_P(temp.get_P());
+        }
         this.size--;
         return temp;
     }
@@ -111,7 +131,15 @@ public class L_d_e {
         while(temp != null && temp!= N){
             temp = temp.get_N();
         }
-        if(temp!=null){
+        if(temp == this.first){
+            temp.get_N().set_P(null);
+            this.first = temp.get_N();
+            this.size--;
+        }else if(temp == this.last){
+            temp.get_P().set_N(null);
+            this.last = temp;
+            this.size--;
+        }else if(temp!=null){
             temp.get_P().set_N(temp.get_N());
             temp.get_N().set_P(temp.get_P());
             this.size--;

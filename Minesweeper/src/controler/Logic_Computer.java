@@ -4,12 +4,13 @@
  */
 package controler;
 
+import model.Game_Matrix;
 import model.L_d_e;
 import model.N_d_e;
 
 /**
- *
- * @author Gabriel
+ * esta clase es la que administra los algoridmos para generar las cordenadas del tiro de la computadora
+ * @author G.B.B
  */
 public class Logic_Computer {
     private L_d_e P_list;
@@ -17,7 +18,7 @@ public class Logic_Computer {
     private L_d_e I_list;
     
     public Logic_Computer(){
-        this.P_list = main_list_generator();
+        this.P_list = this.dummy_m_l_g();
         this.S_list = new L_d_e();
         this.I_list = new L_d_e();
     }
@@ -60,12 +61,12 @@ public class Logic_Computer {
      * casillas de la matriz 
      * @return 
      */
-    private L_d_e main_list_generator(){
+    private L_d_e dummy_m_l_g(){
         L_d_e l = new L_d_e();//se inicializa una lista temporal
         for(int i=0; i<8; i++){//se recorrer las filas 
             for(int j=0; j<8; j++){//se recorren las columnas
-                N_d_e temp = new N_d_e(null,null,i+"_"+j);//se instancia el nuevo nodo con las cordenadas en el nombre
-                l.add_l(temp);//se a;ade a la lista temporal
+                    N_d_e temp = new N_d_e(i+"_"+j);//se instancia el nuevo nodo con las cordenadas en el nombre
+                    l.add_l(temp);//se a;ade a la lista temporal
             }
         }
         return l;//se retorna la lista temporal para ser almacenada como atributo del objeto

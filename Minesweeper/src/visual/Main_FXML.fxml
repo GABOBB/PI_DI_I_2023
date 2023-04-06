@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -13,7 +14,7 @@
       <Insets />
    </opaqueInsets>
    <children>
-      <Button fx:id="g_m" contentDisplay="GRAPHIC_ONLY" layoutX="110.0" layoutY="68.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#game_mode" prefHeight="40.0" prefWidth="40.0" text="Button" />
+      <Button fx:id="g_m" contentDisplay="GRAPHIC_ONLY" layoutX="110.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#game_mode" prefHeight="40.0" prefWidth="40.0" text="Button" />
       <Button fx:id="b0_0" layoutX="10.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
       <Button fx:id="b0_1" layoutX="40.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
       <Button fx:id="b0_2" layoutX="70.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
@@ -78,5 +79,16 @@
       <Button fx:id="b7_2" layoutX="70.0" layoutY="360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
       <Button fx:id="b7_1" layoutX="40.0" layoutY="360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
       <Button fx:id="b7_0" layoutX="10.0" layoutY="360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cords_selected" prefHeight="30.0" prefWidth="30.0" />
+      <Button fx:id="sugenrencia_bt" disable="true" layoutX="204.0" layoutY="118.0" mnemonicParsing="false" onAction="#juega_sug" prefHeight="25.0" prefWidth="40.0" text="?0" />
+      <Text fx:id="num_bombs" fill="RED" layoutX="24.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="61.13671875">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="timer_lb" fill="RED" layoutX="162.0" layoutY="79.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="61.13671875">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

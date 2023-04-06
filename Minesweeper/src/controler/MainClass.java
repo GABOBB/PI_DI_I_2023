@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 /**
  *  esta clase es la responslabe de de iniciar 
  *  la ejecucion y cargar la ventana
- * @author GBB
+ * @author G.B.B
  */
 public class MainClass extends Application {
     
