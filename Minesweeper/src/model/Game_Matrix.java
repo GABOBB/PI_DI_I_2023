@@ -24,6 +24,9 @@ public class Game_Matrix {
         prnt_mtrx();//implirme la matriz como control
     }
     
+    public String[][] get_M(){
+        return this.matrix;
+    }
     /**
      * este metodo genera una cantidad n de casillas con 'bombas' 
      * this.bmbs delimita la cantidad de bombas a generar
@@ -45,14 +48,7 @@ public class Game_Matrix {
                     this.gen_num(i, j);
                     this.bombs.add_l(N_new);//a;ade el nodo a la lista de bombas
                     c++;
-                }//else{//en caso de que la casilla ya tenga una bomba a;ade una iteracion mas
-                   // c--; 
-                //}
-            //}
-            //else{//en caso de que la casilla sea central se desecha y se retrocede el contador 
-            //    c--;
-            //}
-        
+                }
         }
         gen_num_aux();
     }
@@ -77,7 +73,7 @@ public class Game_Matrix {
                         }
                     }  
                 }catch(Exception e){
-                    System.out.println(e);
+                    System.out.println(e +" %%% "+ i +" "+ j);
                 }
             }
         }

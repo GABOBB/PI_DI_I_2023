@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import controler.Rndm;
@@ -16,17 +12,28 @@ public class Pila {
     private String[] con;
     
     
-    
+    /**
+     * este metodo inicializa una pila con su cantidad maxima de 5 elementos
+     */
     public Pila(){
         this.con = new String[this.max];
     }
     
+    /**
+     * este metodo revisa si la pila esta llena antes de hacer el nuevo elemento
+     * @param M 
+     */
     public void consejo(Game_Matrix M){
         if(num<max){
             gen_con(M);
         }
     }
     
+    /**
+     * este metodo genera a partir de un tablemro (Game_matrix) un consejo de un 
+     * casilla en la cula tirar sin bomba
+     * @param M 
+     */
     private void gen_con(Game_Matrix M){
         int i = Rndm.random_int(8);
         int j = Rndm.random_int(8);
@@ -40,11 +47,19 @@ public class Pila {
         this.print_stack();
     }
     
+    /**
+     * este metodo permite ver el elemento con el cual se puede trabajar
+     * @return 
+     */
     public String peek(){ 
         if(this.num == -1){return null;}
         return this.con[this.num];
     }
     
+    /**
+     * este metodo elimina el ultimo elemento y lo retorna
+     * @return 
+     */
     public String pop(){
         
         if(this.num == -1){return null;}
@@ -55,6 +70,10 @@ public class Pila {
         return temp;
     }
     
+    /**
+     * este metodo a;ade un nuevo elemento a la pila si esta tiene espacio
+     * @param x 
+     */
     public void push(String x){
         if(this.max == this.num - 1){
             return;
@@ -62,16 +81,24 @@ public class Pila {
         this.con[++this.num] = x;
     }
     
+    /**
+     * este metodo retorna la canitdad de elementos que tiene la pila
+     * @return 
+     */
     public int get_num(){
         return (this.num + 1);
     }
     
+    
+    /**
+     * este metodo imprimer en consola la pila a manera de control
+     */
     public void print_stack(){
-        System.out.println("------------d------------");
+        System.out.println("------------pila------------");
         for (String i : this.con){
             System.out.println(i);
         }
-        System.out.println("-----------d-------------");
+        System.out.println("-----------pila-------------");
     
     }
 }
