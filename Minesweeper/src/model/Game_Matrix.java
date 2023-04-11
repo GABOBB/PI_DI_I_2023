@@ -27,6 +27,9 @@ public class Game_Matrix {
     public String[][] get_M(){
         return this.matrix;
     }
+    public int get_shots(){
+        return this.shots;
+    }
     /**
      * este metodo genera una cantidad n de casillas con 'bombas' 
      * this.bmbs delimita la cantidad de bombas a generar
@@ -42,7 +45,7 @@ public class Game_Matrix {
                 
                 N_d_e N_new = new N_d_e(i+" "+j);//genera un nodo para a;adirlo a la lista de bombas
                 
-                if(!bombs.srch_Id(N_new.get_Id(),false)){//revisa que no exista una bomba en esas cordenadas
+                if(!"Bomb".equals(this.matrix[i][j])){//revisa que no exista una bomba en esas cordenadas
                     
                     this.matrix[i][j]="Bomb";//marca esa pocicion de la matriz como bomba 
                     this.gen_num(i, j);
@@ -50,6 +53,7 @@ public class Game_Matrix {
                     c++;
                 }
         }
+        this.bombs.prnt_lst();
         gen_num_aux();
     }
     
@@ -77,6 +81,7 @@ public class Game_Matrix {
                 }
             }
         }
+        
     }
     
     /**
@@ -99,7 +104,7 @@ public class Game_Matrix {
      * @return  : retorna un String con un codigo de lo que hay en la casilla
      */
     public String get_cords(int i, int j){
-        this.shots--;//disminulle en uno la cantidad de casillas restantes sin bomba
+        
         return this.matrix[i][j];//devulve la informacion de la casilla
     }
     
@@ -133,8 +138,10 @@ public class Game_Matrix {
         if(x){//si el indicador es true remplaza el texto 
             this.matrix[i][j] = c;
         }else{//si el indicador el false se a;ade el texto a lo que habia antes al inicio
-             this.matrix[i][j]+=c;
+                this.matrix[i][j]+=c;
+            }
+             
         }
-    }
+    
  
 }

@@ -160,6 +160,7 @@ public class M__F_C implements Initializable {
     private Image img_c_g;
     
     private Image img_bndr;
+    private Image img_bndr_c;
     
     private Image img_0;
     private Image img_1;
@@ -183,6 +184,7 @@ public class M__F_C implements Initializable {
     private Pila sugerencia;
     
     private Button btn_m[][] = new Button[8][8];
+    
     
     private int time;
     
@@ -259,9 +261,9 @@ public class M__F_C implements Initializable {
      */
     private void c_play(){
         if(this.ga_mo){
-            //System.out.println(this.COMPUTER.c_shoot(Matrix_Main));
+            
             String shoot = this.COMPUTER.c_shoot(Matrix_Main);
-            System.out.println(shoot);
+            
             String[] s = shoot.split(" ");
             
             int i = Integer.parseInt(s[0]);
@@ -272,7 +274,7 @@ public class M__F_C implements Initializable {
             String info = this.Matrix_Main.get_cords(i, j);
             if(code.equals("@bndr")){
             this.Matrix_Main.setCords(i, j, "@bndr", false);//a;ade a la matriz la etidqueta de que ha sido colocada una bandera en la casilla
-            this.plc_img("bndr", this.btn_m[i][j], i, j);//se realiza la llamada para colocar la imagen correspondiente al boton seleccionado
+            this.plc_img("bndr_c", this.btn_m[i][j], i, j);//se realiza la llamada para colocar la imagen correspondiente al boton seleccionado
             
             int bombs_temp = Integer.parseInt(this.num_bombs.getText());
             this.num_bombs.setText((bombs_temp - 1)+"");
@@ -344,12 +346,26 @@ public class M__F_C implements Initializable {
             if ("PRIMARY".equals(e.getButton().toString())){//en caso de que el boton se precione con el clik iz
                 
                 if(!info.contains("@clkd") & !info.contains("@bndr")){//se asegura que la casilla no tenga bandera o que no haya sido juegada 
-                    //System.out.println(info + "@iz "+i+" "+j);//como control se imprime en consola las cordenadas con su informacion correspondiente
+                    
+                    if(++this.contador == 2 && !this.lose){
+                        this.contador = 0;
+                        this.sugerencia.consejo(Matrix_Main);
+                        this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());
+                        this.sugenrencia_bt.setDisable(false);
+                    }
+                    
                     plc_img(info,x,i,j);//se realiza la llamada para colocar la imagen correspondiente en le boton seleccionado
                     
                     this.playable = false;//le quita la posibilidad al jugador de tirar para que no tire fuera de su turno
                     if(!this.Matrix_Main.get_cords(i, j).contains("Bomb")){//se verifica que la casilla no fuera una bomba 
-                        this.c_play();//si no lo es se hace la llamada al metodo que genera la jugada de la computadora
+                        if(this.Matrix_Main.get_shots()==0){
+                            
+                            this.plc_img("gan", this.g_m, i, j);
+                            this.timer.stop();
+                
+                        }else{
+                            this.c_play();//si no lo es se hace la llamada al metodo que genera la jugada de la computadora
+                        }
                     }else{
                     this.timer.stop();
                     }
@@ -359,6 +375,13 @@ public class M__F_C implements Initializable {
             if ("SECONDARY".equals(e.getButton().toString())){//en caso que el boton se precione con el clik der
                 //System.out.println(info + "@der "+i+" "+j);//se imprime por control las cordenadas y lo que estas contienen
                 if(!info.contains("@clkd") & !info.contains("@bndr")){//se asegura que la casilla no tenga ni bandera ni haya sido jugada
+
+                    if(++this.contador == 2 && !this.lose){
+                        this.contador = 0;
+                        this.sugerencia.consejo(Matrix_Main);
+                        this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());
+                        this.sugenrencia_bt.setDisable(false);
+                    }
                     
                     this.Matrix_Main.setCords(i, j, "@bndr", false);//a;ade a la matriz la etidqueta de que ha sido colocada una bandera en la casilla
                     plc_img("bndr", x, i, j);//se realiza la llamada para colocar la imagen correspondiente al boton seleccionado
@@ -371,23 +394,25 @@ public class M__F_C implements Initializable {
            
                 }else if(this.Matrix_Main.get_cords(i,j).contains("@bndr")){//si solo tiene el indicador de bandera la quita
                     
+                    if(++this.contador == 2 && !this.lose){
+                        this.contador = 0;
+                        this.sugerencia.consejo(Matrix_Main);
+                        this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());
+                        this.sugenrencia_bt.setDisable(false);
+                    }
+                    
                     x.setGraphic(null);//elimina la imagen de banderda del boton
                     String temp = info.split("@")[0];//obtiene le valor origianl en las cordenandas
                     this.Matrix_Main.setCords(i, j, temp, true);//lo guarda en la posicion en la que estba pero ahora sin el indicador de bandera
                     
-                    int bombs_temp = Integer.parseInt(this.num_bombs.getText());
-                    this.num_bombs.setText((bombs_temp + 1)+"");
+                    int bombs_temp = 1+Integer.parseInt(this.num_bombs.getText());
+                    this.num_bombs.setText(bombs_temp + "");
                     
                     this.playable = false;//le quita la posibilidad al jugador de tirar fuera de su turno
                     this.c_play();//realiza la llamada al metodo que controla el tiro de la computadora
                 }
             }
-            if(++this.contador == 2 && !this.lose){
-                this.contador = 0;
-                this.sugerencia.consejo(Matrix_Main);
-                this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());
-                this.sugenrencia_bt.setDisable(false);
-            }
+            
         }
     }
     
@@ -440,8 +465,11 @@ public class M__F_C implements Initializable {
         
         switch(code){
             
-                case "bndr"://significa que debe de poner una bandera en el boton
+            case "bndr"://significa que debe de poner una bandera en el boton
                 b.setGraphic(new ImageView(this.img_bndr));
+                break;
+            case "bndr_c"://significa que debe de poner una bandera en el boton
+                b.setGraphic(new ImageView(this.img_bndr_c));
                 break;
             case "gan"://significa que debe poner la cara ganadora en el boton principal y detener el juego
                 this.g_m.setGraphic(new ImageView(this.img_c_g));
@@ -551,6 +579,7 @@ public class M__F_C implements Initializable {
         URL l_c_s = getClass().getResource("/auxiliar/cara_sorp.png");
         URL l_c_g = getClass().getResource("/auxiliar/cara_fachera.png");
         URL l_bndr = getClass().getResource("/auxiliar/bndr.png");
+        URL l_bndr_c = getClass().getResource("/auxiliar/bndr_c.png");
         URL l_0 = getClass().getResource("/auxiliar/0.png");
         URL l_0_c = getClass().getResource("/auxiliar/0_c.png");
         URL l_1 = getClass().getResource("/auxiliar/1.png");
@@ -577,6 +606,7 @@ public class M__F_C implements Initializable {
         this.img_3 = new Image(l_3.toString(),20,20,false,true);
         this.img_4 = new Image(l_4.toString(),20,20,false,true);
         this.img_5 = new Image(l_5.toString(),20,20,false,true);
+        this.img_bndr_c = new Image(l_bndr_c.toString(),20,20,false,true);
         this.img_0_c = new Image(l_0_c.toString(),20,20,false,true);
         this.img_1_c = new Image(l_1_c.toString(),20,20,false,true);
         this.img_2_c = new Image(l_2_c.toString(),20,20,false,true);
