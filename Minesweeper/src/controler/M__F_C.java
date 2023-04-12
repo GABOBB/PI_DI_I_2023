@@ -260,56 +260,59 @@ public class M__F_C implements Initializable {
      * este metodo sencarga de pedir las cordenadas del tiro de la computadora en ambos modos de juego
      */
     private void c_play(){
-        if(this.ga_mo){
+        if(this.ga_mo){//dependiendo del estado de la variable booleana es le tipo de tiro
             
-            String shoot = this.COMPUTER.c_shoot(Matrix_Main);
+            String shoot = this.COMPUTER.c_shoot(Matrix_Main);//obtiene un string con la informacion de las coordenadas y si es bandera o jugada 
             
-            String[] s = shoot.split(" ");
+            String[] s = shoot.split(" ");//obtiene las coordenadas y el tipo de tiro
             
-            int i = Integer.parseInt(s[0]);
-            int j = Integer.parseInt(s[1]);
-            String code = s[2];
+            int i = Integer.parseInt(s[0]);//la fila de las coordenadas
+            int j = Integer.parseInt(s[1]);//la colubna de las coordenadas
+            String code = s[2];//el codigo diferenciador del tipo de tiro
             
-            System.out.println(code + " en " + i + "__" + j);
-            String info = this.Matrix_Main.get_cords(i, j);
-            if(code.equals("@bndr")){
-            this.Matrix_Main.setCords(i, j, "@bndr", false);//a;ade a la matriz la etidqueta de que ha sido colocada una bandera en la casilla
-            this.plc_img("bndr_c", this.btn_m[i][j], i, j);//se realiza la llamada para colocar la imagen correspondiente al boton seleccionado
+            System.out.println(code + " en " + i + "__" + j);//por control imprime las cordenadas despues del identificador de tiro
+            String info = this.Matrix_Main.get_cords(i, j);//obtiene el codigo de la casilla en las coordenadas
             
-            int bombs_temp = Integer.parseInt(this.num_bombs.getText());
-            this.num_bombs.setText((bombs_temp - 1)+"");
-            
-            this.playable = true;
-            }else if(code.equals("@clkd")){
-                this.plc_img(info + "_c", this.btn_m[i][j], i, j);
-                this.Matrix_Main.setCords(i, j, "@clkd", false);
-                if(!info.contains("Bomb")){
-                    this.playable = true;
-                }else{
-                    this.timer.stop();
-                    this.plc_img("gan", this.g_m, i, j);
+            if(code.equals("@bndr")){//revisa si el identificador de tiro es para colocar una bandera
+                
+                this.Matrix_Main.setCords(i, j, "@bndr", false);//a;ade a la matriz la etidqueta de que ha sido colocada una bandera en la casilla
+                this.plc_img("bndr_c", this.btn_m[i][j], i, j);//se realiza la llamada para colocar la imagen correspondiente al boton seleccionado
+
+                int bombs_temp = Integer.parseInt(this.num_bombs.getText());//disminulle en uno la el indicador de posibles bombas encontradas
+                this.num_bombs.setText((bombs_temp - 1)+"");//actualiza la etiqueta
+
+                this.playable = true;//devuelve la oportunidad al judador para seleccionar un tiro
+                
+            }else if(code.equals("@clkd")){//si el identificador de tiro es jugar la casilla
+                
+                this.plc_img(info + "_c", this.btn_m[i][j], i, j);//coloca la imegen correspondiente a la casilla jugada
+                this.Matrix_Main.setCords(i, j, "@clkd", false);//se actualiza la informacion en la matriz para evidencia qie ya fue jugada
+                if(!info.contains("Bomb")){//si en las cordenadas no hay una bomba
+                    this.playable = true;//devuelve la posibilidad al jugador de selecciona un tiro 
+                }else{//si en la casilla hay una bomba
+                    this.timer.stop();//detiene el contador de tiempo
+                    this.plc_img("gan", this.g_m, i, j);//coloca la imagen para dejarle saber al jugador que ya gano
                 }
                 
             }
-        }else{
+        }else{//si el indicador es false significa modo "dummy"
          
-            String shoot = this.COMPUTER.c_shoot();//dependiendo en el valor de this.ga_mo se generan cordenadas aleatorias o bajo el algoridmo
+            String shoot = this.COMPUTER.c_shoot();//se generan cordenadas aleatorias 
             int i = Integer.parseInt(shoot.charAt(0)+"");//se obtiene la fila de las cordenadas 
             int j = Integer.parseInt(shoot.charAt(2)+"");//se obtiene la columna de las cordenadas
 
-            //System.out.println(i + " " + j + " /// " + this.Matrix_Main.get_cords(i, j));// por control imprime las cordenadas y lo que estas tienen 
-            String info = this.Matrix_Main.get_cords(i, j);
+            
+            String info = this.Matrix_Main.get_cords(i, j);//obtiene el codigo de lo que hay en la casilla seleccionada
 
-            if(info.contains("@clkd")){
-                c_play();
-                return;
+            if(info.contains("@clkd") || info.contains("@bndr")){//se serciora que esa casilla no haya sido juganda antes
+                c_play();//realiza una llamada recurciva hasta que la casilla seleccionada de manera aleatoria no haya sido jugada
+                return;//detiene la ejecucuin para evitar errores
             }
-            info = info.split("@")[0];
 
             plc_img(info+"_c",this.btn_m[i][j],i,j);//hace la llamada a colocar la imagen correspondiente al boton en las cordenadas i,j
             //this.Matrix_Main.setCords(i, j, "@clkd", false);//a;ade a las cordenadas el indicador de que la casilla ya fue cliqueada
 
-            if(!info.equals("Bomb")){
+            if(!info.equals("Bomb")){//si la ca
             this.playable = true;//restaura la posibilidad del jugador para tirar
             }else{
                 this.plc_img("gan", this.g_m, i, j);
@@ -337,6 +340,8 @@ public class M__F_C implements Initializable {
                 this.timer.start();
             }//si el primer tiro de la partida se cambia el balor a iniciado
             
+            this.playable = false;//le quita la posibilidad al jugador de tirar para que no tire fuera de su turno
+            
             Button x = (Button) e.getSource();//se obtiene el boton que realiza el tiro
             int i = Integer.parseInt(x.getId().charAt(1)+"");//separa la cordenada i dada por el nombre del boton
             int j = Integer.parseInt(x.getId().charAt(3)+"");//separa la cordenada j dada por el nombre del boton
@@ -347,7 +352,7 @@ public class M__F_C implements Initializable {
                 
                 if(!info.contains("@clkd") & !info.contains("@bndr")){//se asegura que la casilla no tenga bandera o que no haya sido juegada 
                     
-                    if(++this.contador == 2 && !this.lose){
+                    if(++this.contador == 5 && !this.lose){
                         this.contador = 0;
                         this.sugerencia.consejo(Matrix_Main);
                         this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());
@@ -356,16 +361,16 @@ public class M__F_C implements Initializable {
                     
                     plc_img(info,x,i,j);//se realiza la llamada para colocar la imagen correspondiente en le boton seleccionado
                     
-                    this.playable = false;//le quita la posibilidad al jugador de tirar para que no tire fuera de su turno
                     if(!this.Matrix_Main.get_cords(i, j).contains("Bomb")){//se verifica que la casilla no fuera una bomba 
-                        if(this.Matrix_Main.get_shots()==0){
-                            
-                            this.plc_img("gan", this.g_m, i, j);
-                            this.timer.stop();
-                
+                        this.c_play();//si no lo es se hace la llamada al metodo que genera la jugada de la computadora
+                        /*if(this.Matrix_Main.get_shots()==0){
+                        
+                        this.plc_img("gan", this.g_m, i, j);
+                        this.timer.stop();
+                        
                         }else{
-                            this.c_play();//si no lo es se hace la llamada al metodo que genera la jugada de la computadora
-                        }
+                        
+                        }*/
                     }else{
                     this.timer.stop();
                     }
