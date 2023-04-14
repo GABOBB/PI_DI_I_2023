@@ -1,53 +1,113 @@
-#iclude <Keyboard.h>
-#iclude <Mouse.h>
+int VRx = A5;
+int VRy = A3;
+int SW = 6;
+int Bttn = 8;
+
+const int ledPin = 7;
+
+const int sPin = 2;
+
+int xPosition = 0;
+int yPosition = 0;
+int SW_state = 0;
+int mapX = 0;
+int mapY = 0;
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(9600);
+  
+  pinMode(ledPin,OUTPUT);
+  pinMode(sPin,OUTPUT);
+  
+  
+  pinMode(VRx, INPUT);
+  pinMode(VRy, INPUT);
+  pinMode(SW, INPUT_PULLUP); 
+  pinMode(Bttn, INPUT_PULLUP);
 
+  Serial.println("Begin now");
 }
 
 void loop() {
   xPosition = analogRead(VRx);
   yPosition = analogRead(VRy);
   SW_state = digitalRead(SW);
+
   mapX = map(xPosition, 0, 1023, -512, 512);
   mapY = map(yPosition, 0, 1023, -512, 512);
 
   if (SW_state==LOW){
-    Serial.println("CLK\n");
+    Serial.println("@clkd\n");
   }
-  
-  if (mapX>150){
-    
-    Mouse.move(-40, 0)
-    delay(500);
-
-  } else if (mapX<-150){
-    
-    Serial.println("RGH\n");
-    Mouse.move(40, 0)
-    delay(500);
-  
-  } else if (mapX>350){
-    
-    Mouse.move(-40, 0)
-    delay(200);
-
-  } else if (mapX<-350){
-
-    Mouse.move(40, 0)
-    delay(200);
-
+  if (digitalRead(Bttn)==LOW){
+    Serial.println("@bndr\n");
+  }
+  if (mapX>450){
+    Serial.println("derecha\n");
+  }
+  else if (mapX<-450){
+    Serial.println("Izquierda\n");
   }
 
-  if (mapY>150){
-    Serial.println("DWN\n");
-    delay(500);
+  if (mapY>450){
+    Serial.println("arriba\n");
   }
-  else if (mapY<-150){
-    Serial.println("UP\n");
-    delay(500);
+  else if (mapY<-450){
+    Serial.println("abajo\n");
   }
   readSerial();
+  delay(100);
+}
+
+ void makesound(int n){
+    int count = 0;
+    int hz ;
+    if(n==1){
+        hz = 400;//fecuencia para darle a una bomba
+                                     
+    }else{
+        hz = 300;//frecuencia para darle a casilla libre
+    }
+    while(count<700){
+        count++;
+        digitalWrite(sPin, HIGH);
+        delayMicroseconds(hz);
+        digitalWrite(sPin,LOW);
+        delayMicroseconds(hz);
+    } 
+ } 
+
+ void encenderLed(){
+    digitalWrite(ledPin,HIGH);
+    delay(300);
+    digitalWrite(ledPin,LOW);
+    
+ }
+
+ 
+ void readSerial(){ //leer el monitor serial
+  if(Serial.available()>0){ //leer si tiene datos en el monitor serial
+    String data = Serial.readString();
+    Serial.print(" I receive: ");
+    Serial.println(data);
+    compareIncoming(data);
+    }
+  }
+  //este metodo compara el data y enciende un led
+ void compareIncoming(String data){
+
+  if (data=="flag\n"){
+    
+    encenderLed();
+
+  }else if (data=="bomb\n"){
+    
+    makesound(1);
   
+  }else if (data=="safe\n"){
+    
+    makesound(2);
+    
+  }
+ 
 }
