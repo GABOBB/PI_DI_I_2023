@@ -43,17 +43,17 @@ void loop() {
     Serial.println("@bndr\n");
   }
   if (mapX>450){
-    Serial.println("derecha\n");
+    Serial.println("RT\n");
   }
   else if (mapX<-450){
-    Serial.println("Izquierda\n");
+    Serial.println("LF\n");
   }
 
   if (mapY>450){
-    Serial.println("arriba\n");
+    Serial.println("UP\n");
   }
   else if (mapY<-450){
-    Serial.println("abajo\n");
+    Serial.println("DW\n");
   }
   readSerial();
   delay(100);

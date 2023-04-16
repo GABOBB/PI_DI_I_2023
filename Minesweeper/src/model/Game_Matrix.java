@@ -112,6 +112,7 @@ public class Game_Matrix {
      * este metodo recorre la matriz y la imprime en consola
      */
     public void prnt_mtrx(){
+        System.out.println("##################################################");
         for(String i[] : this.matrix){//obtiene una fila de la matiz en cada iteracion
             String fila="";// inicializa un String temporal para llevar los datos de cada fila
             for(String j : i){//reccore todos los elementos de cada filla
@@ -124,6 +125,7 @@ public class Game_Matrix {
             }
             System.out.println(fila);//imprime fila por fila para conservar la forma de matriz
         }
+        System.out.println("##################################################");
     }
     
     /**

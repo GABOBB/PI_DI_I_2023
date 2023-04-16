@@ -90,5 +90,6 @@
             <Font size="22.0" />
          </font>
       </Text>
+      <Button fx:id="ino_bt" layoutX="194.0" layoutY="14.0" mnemonicParsing="false" onAction="#ino_cnct" text="arduino" />
    </children>
 </AnchorPane>
