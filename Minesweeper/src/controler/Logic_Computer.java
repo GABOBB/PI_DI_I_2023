@@ -32,6 +32,7 @@ public class Logic_Computer {
     public String c_shoot(){
             return this.ez_shoot();
     }
+    
     /**
      * este metodo realiza la genera las cordenadas y el tipo de tiro
      * en el modo de dificultad alta
@@ -62,15 +63,16 @@ public class Logic_Computer {
     private String hard_shoot(Game_Matrix M){
         
         this.clr_lsts();//reinicia las listas 
-        System.err.print("\n("+this.I_list.get_size()+" 1 i) "+"("+this.P_list.get_size()+" 1 p) "+"("+this.S_list.get_size()+" 1 s)");
+        System.out.print("\n("+this.I_list.get_size()+" 1 i) "+"("+this.P_list.get_size()+" 1 p) "+"("+this.S_list.get_size()+" 1 s)");
         
         this.P_list = this.get_shootable(M);//adquiere las cordenadas de las casillas que no se han jugado
         
-        System.err.print("\n("+this.I_list.get_size()+" 2 i) "+"("+this.P_list.get_size()+" 2 p) "+"("+this.S_list.get_size()+" 2 s)");
+        System.out.print("\n("+this.I_list.get_size()+" 2 i) "+"("+this.P_list.get_size()+" 2 p) "+"("+this.S_list.get_size()+" 2 s)");
+        
         this.P_list.prnt_lst();//imprime la lista principal completa
         
         this.split_s_i(M);//separa las casillas de la lista principal en las casiillas seguras e inseguras
-        System.err.print("\n("+this.I_list.get_size()+" 3 i) "+"("+this.P_list.get_size()+" 3 p) "+"("+this.S_list.get_size()+" 3 s)");
+        System.out.print("\n("+this.I_list.get_size()+" 3 i) "+"("+this.P_list.get_size()+" 3 p) "+"("+this.S_list.get_size()+" 3 s)");
         
         
         if(this.S_list.get_size()>0){//si la lista segura tiene elementos escoge uno de estos
@@ -104,6 +106,7 @@ public class Logic_Computer {
     private void split_s_i(Game_Matrix M){
 
         while(this.P_list.get_size()!=0){//se serciora de que todavia no hayan casillas sin asignar en segura o insegura
+            
             N_d_e act = this.P_list.srch_indx(Rndm.random_int(this.P_list.get_size()));//obtiene un nodo aleatorio de la lista principal
             String[] nom = act.get_Id().split(" ");//obtiene la informacion de la casilla
             int x = Integer.parseInt(nom[0]);//cordenadas en x
@@ -124,17 +127,29 @@ public class Logic_Computer {
                 this.P_list.d_N(act);//se elimina de la lista
                 act.set_state("@bndr");//se le asigna estado de bandera
                 this.S_list.add_l(act);//se a;ade a la lista segura
+                System.out.println("lista segura");
+                this.S_list.prnt_lst();
+                System.out.println("lista principal");
+                this.P_list.prnt_lst();
 
             }else if(codes.contains("c")){//si no hay indicador de bombas y almenos una de casilla libre se alade a segura con estado de clik
                 this.P_list.d_N(act);//se elimina de la lista 
                 act.set_state("@clkd");//se le asigna estado de jugable
                 this.S_list.add_l(act);//se alade a la lista segura
-
+                System.out.println("lista Segura");
+                this.S_list.prnt_lst();
+                System.out.println("lista principal");
+                this.P_list.prnt_lst();
+                
             }else {//si no hay ningun idicador de bomba o casilla libre la casiila es insegura
                 this.P_list.d_N(act);//se elimina de la lista 
                 act.set_state("@clkd");//se le asigna esto de jugable
                 this.I_list.add_l(act);//se a;ade a la lista insegura
-
+                System.out.println("lista Insegura");
+                this.I_list.prnt_lst();
+                System.out.println("lista general");
+                this.P_list.prnt_lst();
+                
                 }
             }
     }

@@ -49,18 +49,23 @@ public class Arduino_serial_c extends Thread {
         this.outP = this.ardn_prt.getOutputStream();
         
     }
-    
+    /**
+     * este metodo cierra la coneccion con arduino y detine la lectura
+     */
     public void close(){
-        this.reading = false;
-        this.ardn_prt.closePort();
-        if(!this.ardn_prt.isOpen()){
+        this.reading = false;//detiene la lectura
+        this.ardn_prt.closePort();//cierra el puerto
+        if(!this.ardn_prt.isOpen()){//se cerciora que el puerto se cerro
             System.out.println("se logro cerrar el puerto correctamente");
         }
     }
-    
+    /**
+     * este metodo se utiliza para realizar acciones en la interface grafica segun lo que encia el arduino
+     * @param code 
+     */
  private void accion(String code){
     Platform.runLater(() -> {
-        if(this.Win_c.get_playable() && !this.Win_c.get_lose()){
+        if(this.Win_c.get_playable() && !this.Win_c.get_lose()){//se cerciora que el el jugador este en su turno 
         
             if(code.contains("UP")){
                 this.Win_c.move_UP();
@@ -77,28 +82,35 @@ public class Arduino_serial_c extends Thread {
             }
         }
     });
-}
+    }
+ 
+    /**
+     * este metodo se usa para ya establecida la coneccion con arduino porder enviar mensajes
+     * @param mensaje 
+     */
     public void send_s(String mensaje) {
     try {
-        this.outP.write(mensaje.getBytes());
-        this.outP.flush();
+        this.outP.write(mensaje.getBytes());//envia un string de manera serail
+        this.outP.flush();//limpia la salida 
         System.out.println("Mensaje enviado: " + mensaje);
     } catch (IOException ex) {
         Logger.getLogger(Arduino_serial_c.class.getName()).log(Level.SEVERE, null, ex);
     }
-}
+    }
 
-    
+    /**
+     * se encarga de leer el serial que envia el arduino
+     */
     @Override
     public void run(){
-        while(this.reading){
+        while(this.reading){//mientras este conectado hace:
             try {
-                if(this.inP.available() >0){
-                    byte[] bffr = new byte[this.inP.available()];
-                    this.inP.read(bffr);
-                    String data = new String(bffr);
+                if(this.inP.available() >0){//si hay bytes que leer
+                    byte[] bffr = new byte[this.inP.available()];//instancia un array con la cantidad de bytes disponivles
+                    this.inP.read(bffr);//lee los bytes
+                    String data = new String(bffr);//los traduce a un string
                     System.out.println(data);
-                    this.accion(data);
+                    this.accion(data);//realiza la accion relacionada con el codigo enviado
                     Thread.sleep(100);
                 }
             } catch (IOException | InterruptedException ex) {

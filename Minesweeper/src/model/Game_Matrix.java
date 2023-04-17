@@ -24,9 +24,18 @@ public class Game_Matrix {
         prnt_mtrx();//implirme la matriz como control
     }
     
+    /**
+     * este metodo retorna la matriz principal
+     * @return 
+     */
     public String[][] get_M(){
         return this.matrix;
     }
+    
+    /**
+     * este metodo retrona la cantidad de tiros
+     * @return 
+     */
     public int get_shots(){
         return this.shots;
     }
@@ -64,13 +73,13 @@ public class Game_Matrix {
      * @param y 
      */
     private void gen_num(int x, int y){
-        for(int i = (x-1);i<(x+2);i++){
-            for(int j = (y-1);j<(y+2);j++){
+        for(int i = (x-1);i<(x+2);i++){//recorre las filas de la matriz 3x3
+            for(int j = (y-1);j<(y+2);j++){//recorre las columnas de la matriz 3x3 
                 try{
-                    if(!"Bomb".equals(this.matrix[i][j])){
-                        if(this.matrix[i][j]==null){
-                            this.matrix[i][j]=1+"";
-                        }else{
+                    if(!"Bomb".equals(this.matrix[i][j])){//se cercioera que no haya una bonba en la matriz
+                        if(this.matrix[i][j]==null){//si la casilla no tiene valor asignado 
+                            this.matrix[i][j]=1+"";//le asigna un 1
+                        }else{//si ya tiene valor asignado se suma 1
                             int temp = Integer.parseInt(this.matrix[i][j]);
                             temp += 1;
                             this.matrix[i][j]= temp+"";

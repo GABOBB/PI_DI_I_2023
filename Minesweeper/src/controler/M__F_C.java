@@ -245,8 +245,16 @@ public class M__F_C implements Initializable {
         });
     }   
     
+    /**
+     * retorna si el jugador puede jugar 
+     * @return 
+     */
     public boolean get_playable(){return this.playable;}
     
+    /**
+     * retorma si el jugador ya perdio
+     * @return 
+     */
     public boolean get_lose(){return this.lose;}
     
 /**
@@ -435,16 +443,18 @@ public class M__F_C implements Initializable {
         }
     }
     
+    /**
+     * esete metodo se usa cuando hay sugerencias disponibles y el jugador quiere jugarlas
+     * @param event 
+     */
         @FXML
     private void juega_sug(ActionEvent event) {
         
-        if(!this.playable || this.lose || this.sugerencia.get_num()<0){
-            //System.out.println("cea necio");
-            return;}
+        if(!this.playable || this.lose || this.sugerencia.get_num()<0){return;}//verifica que el jugador tenga permitido jugar y haya al menos una sugerencia 
         
-        String temp = this.sugerencia.pop();
+        String temp = this.sugerencia.pop();//obtiene la sugerencai de la pila y la elimina
         
-        if(this.sugerencia.get_num() == 0){
+        if(this.sugerencia.get_num() == 0){//desactiva el boton si no quedan sugerencias
             this.sugenrencia_bt.setDisable(true);
         }
         
@@ -455,18 +465,18 @@ public class M__F_C implements Initializable {
         int i = Integer.parseInt(temp.split(" ")[0]);//separa la cordenada i dada por el nombre del boton
         int j = Integer.parseInt(temp.split(" ")[1]);//separa la cordenada j dada por el nombre del boton
         
-        //System.out.println(temp+" estes son las coordenadas sugeridas" + i + " " + j);
+        System.out.println(temp+" estes son las coordenadas sugeridas" + i + " " + j);
         
-        String info = this.Matrix_Main.get_cords(i, j);
+        String info = this.Matrix_Main.get_cords(i, j);//obtiene lo que hay en esas cordenadas de la matriz
         
-        if(info.contains("@clkd") || info.contains("@bndr")){
-            this.juega_sug(event);
+        if(info.contains("@clkd") || info.contains("@bndr")){//se sercioera que que la casillano haya sido jugada
+            this.juega_sug(event);//realiza una llamada recurciba para seguir con la siguiente sugerencia 
             return;
         }
         
-        this.plc_img(info, this.btn_m[i][j], i, j);
+        this.plc_img(info, this.btn_m[i][j], i, j);//realiza la llama para poner la imagen en las cordenadas sugeridas
         
-        this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());
+        this.sugenrencia_bt.setText("?"+this.sugerencia.get_num());//actualiza la cantidad de sugerencias
         
         this.playable = false;//le quita la posibilidad al jugador de tirar fuera de su turno
         this.c_play();//realiza la llamada al metodo que controla el tiro de la computadora
@@ -482,6 +492,7 @@ public class M__F_C implements Initializable {
      */
     private void plc_img(String code, Button b, int i, int j){
         if(!code.contains("n") && !code.contains("b")){ 
+            System.out.println(this.judadas + " jugadas restantes");
             if(--this.judadas == 0){
                 this.plc_img("gan", b, i, j);
                 this.lose = true;
@@ -561,9 +572,9 @@ public class M__F_C implements Initializable {
                     for(int y = (j - 1); y < (j+2); y++){
                         if(x==i && y==j){break;}
                         try{
-                            
+                            if(!(this.Matrix_Main.get_cords(x, y).contains("@clkd"))){
                             this.plc_img(this.Matrix_Main.get_cords(x, y)+"_c",this.btn_m[x][y],x,y);
-
+                            }
                         }catch(Exception e){}
                     }
                 }
@@ -594,28 +605,33 @@ public class M__F_C implements Initializable {
         }
     }
     
-    
+    /**
+     * este metodo es el que establece la coneccion con el arduino
+     * @param event 
+     */
     @FXML
     private void ino_cnct(ActionEvent event) {
-        if(!this.ino_con){
-            this.arduino = new Arduino_serial_c(this);
+        if(!this.ino_con){//si el arduino no esta conectado lo conecta
+            this.arduino = new Arduino_serial_c(this);//instacia un nuevo objeto de arduino serial
             
-            this.last_b.setGraphic(this.btn_m[p_x][p_y].getGraphic()) ;
+            this.last_b.setGraphic(this.btn_m[p_x][p_y].getGraphic()) ;//obtiene la imagen del boton en las coordenadas
             
-            this.btn_m[this.p_x][this.p_y].setGraphic(new ImageView(this.img_p));
+            this.btn_m[this.p_x][this.p_y].setGraphic(new ImageView(this.img_p));//se carga la imagen del putero en el boton en las coordenadas
             
-            this.arduino.start();
+            this.arduino.start();//se incia el hilo que lee el serial
         
-        }else{
-            this.btn_m[this.p_x][this.p_y].setGraphic(this.last_b.getGraphic());
-            this.arduino.close();
+        }else{// si el arduino esta conectado lo desconecta
+            this.btn_m[this.p_x][this.p_y].setGraphic(this.last_b.getGraphic());//se restarua la imagen del boton con el putnero
+            this.arduino.close();//se cierra el puerto serial
             
         }
-        this.ino_con = !this.ino_con;
+        this.ino_con = !this.ino_con;//se altera el valor p
     }
     
     
-    
+    /**
+     * este metodo mueve el ptunrero hacia arriba 
+     */
     public void move_UP(){
         this.btn_m[p_x][p_y].setGraphic(last_b.getGraphic());
         if(this.p_x == 0){
@@ -629,6 +645,9 @@ public class M__F_C implements Initializable {
         this.btn_m[p_x][p_y].setGraphic(new ImageView(this.img_p));
     }
     
+    /**
+     * este puntero mueve el puntero hacia abajo
+     */
     public void move_dn(){
         this.btn_m[p_x][p_y].setGraphic(last_b.getGraphic());
         if(this.p_x == 7){
@@ -642,6 +661,9 @@ public class M__F_C implements Initializable {
         this.btn_m[p_x][p_y].setGraphic(new ImageView(this.img_p));
     }
     
+    /**
+     * este metdo mueve el puntero hacia la izquierda
+     */
     public void move_LF(){
         this.btn_m[p_x][p_y].setGraphic(last_b.getGraphic());
         if(this.p_y == 0){
@@ -654,7 +676,9 @@ public class M__F_C implements Initializable {
         this.last_b.setGraphic(temp);
         this.btn_m[p_x][p_y].setGraphic(new ImageView(this.img_p));
     }
-    
+    /**
+     * este metodo mueve el puntero hacia la derecha
+     */
     public void move_RD(){
         this.btn_m[p_x][p_y].setGraphic(last_b.getGraphic());
         if(this.p_y == 7){
@@ -668,6 +692,9 @@ public class M__F_C implements Initializable {
         this.btn_m[p_x][p_y].setGraphic(new ImageView(this.img_p));
     }
     
+    /**
+     * este metodo realiza el tiro segun las coordenadas en las que apunta el arduino
+     */
     public void Sht_ino(){
         if(this.playable && !this.lose){
             if(!this.begin){
@@ -698,18 +725,21 @@ public class M__F_C implements Initializable {
         }
     }
     
+    /**
+     * este metodo pone una bandera en las coordenas del puntero
+     */
     public void flag_ino(){
-        if(this.playable && !this.lose){
-            if(!this.begin){
+        if(this.playable && !this.lose){//se serciora que sea turno del jugador y no haya perdido
+            if(!this.begin){//si no ha inciciado el juego lo inicia
                 this.begin = true;
-                this.timer.start();
+                this.timer.start();//comienza el temporizador
             }
             
-            int i = this.p_x; int j = this.p_y;
-            String info = this.Matrix_Main.get_cords(i, j);
+            int i = this.p_x; int j = this.p_y;//carga las coordenadas
+            String info = this.Matrix_Main.get_cords(i, j);//obtiene lo que hay en las cordenadas 
             
-            if(!info.contains("@clkd")){
-                if(info.contains("@bndr")){
+            if(!info.contains("@clkd")){//se cerciora que la casilla no haya sido jugada
+                if(info.contains("@bndr")){//si la casilla tiene una bandera la quita
                     this.btn_m[i][j].setGraphic(null);//elimina la imagen de banderda del boton
                     String temp = info.split("@")[0];//obtiene le valor origianl en las cordenandas
                     this.Matrix_Main.setCords(i, j, temp, true);//lo guarda en la posicion en la que estba pero ahora sin el indicador de bandera
@@ -719,7 +749,7 @@ public class M__F_C implements Initializable {
 
                     this.playable = false;//le quita la posibilidad al jugador de tirar fuera de su turno
                     this.c_play();//realiza la llamada al metodo que controla el tiro de la computadora
-                }else if(!info.contains("@bndr")){
+                }else if(!info.contains("@bndr")){//si la casilla no contiene una bandera la pone
                     this.arduino.send_s("flag\n");
                     this.Matrix_Main.setCords(i, j, "@bndr", false);//a;ade a la matriz la etidqueta de que ha sido colocada una bandera en la casilla
                     plc_img("bndr", this.btn_m[i][j], i, j);//se realiza la llamada para colocar la imagen correspondiente al boton seleccionado
@@ -730,7 +760,7 @@ public class M__F_C implements Initializable {
                     this.playable = false;//le quita la posibilidad al jugador de tirar fuera de su turno
                     this.c_play();//realiza la llamada al metodo que controla el tiro de la computadora
                 }
-                this.last_b.setGraphic(this.btn_m[i][j].getGraphic());
+                this.last_b.setGraphic(this.btn_m[i][j].getGraphic());//obtiene la imagen del ultimo boton
             }
         }
         

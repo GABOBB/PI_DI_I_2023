@@ -72,11 +72,13 @@ public class L_d_e {
      * este metodo imprime en consola la lista 
      */
     public void prnt_lst(){
+        System.out.println("\n##################################################################");
         N_d_e actual = this.first;//referencia a un nodo temporal como el primero de la lista
         while(actual != null){//mientras el teporal no sea nulo repita
             System.out.print(actual.get_Id()+"   ");// imprimir el id del nodo temporal con espacios
             actual = actual.get_N();//el nodo actual se guarda commo el siguiente del mismo
         }
+        System.out.println("\n##################################################################");
     }
     
     /**
